@@ -1,0 +1,256 @@
+{
+  "app": {
+    "name": "OddsIQ",
+    "tagline": "Smart Sports Predictions"
+  },
+  "nav": {
+    "home": "Home",
+    "predictions": "Predictions",
+    "leagues": "Leagues",
+    "accuracy": "Accuracy",
+    "guides": "Guides",
+    "premium": "Premium",
+    "login": "Login",
+    "register": "Sign Up",
+    "dashboard": "Dashboard",
+    "logout": "Logout",
+    "admin": "Admin"
+  },
+  "home": {
+    "hero": {
+      "title": "Data-Driven Sports Predictions",
+      "subtitle": "Expert analysis, real-time odds, and AI-powered insights for smarter betting decisions.",
+      "cta": "Get Started Free"
+    },
+    "topPicks": "Today's Top Picks",
+    "valueBets": "Value Bets",
+    "valueBetsCount": "{count} value bets today",
+    "featuredPredictions": "Featured Predictions",
+    "accuracySnapshot": "Our Accuracy",
+    "accuracyThisMonth": "{percent}% correct this month",
+    "viewAll": "View All"
+  },
+  "predictions": {
+    "title": "Predictions",
+    "filters": {
+      "sport": "Sport",
+      "league": "League",
+      "date": "Date",
+      "all": "All",
+      "leagueType": "Competition Type",
+      "allCompetitions": "All Competitions",
+      "domestic": "Domestic Leagues",
+      "international": "All International",
+      "internationalClub": "Club Competitions",
+      "internationalNational": "National Teams"
+    },
+    "sports": {
+      "football": "Football",
+      "basketball": "Basketball",
+      "tennis": "Tennis"
+    },
+    "noResults": "No predictions available for the selected filters.",
+    "loadMore": "Load More"
+  },
+  "match": {
+    "kickoff": "Kickoff",
+    "prediction": "Our Prediction",
+    "confidence": "Confidence",
+    "valueBet": "Value Bet",
+    "form": "Recent Form",
+    "h2h": "Head to Head",
+    "lastMatches": "Last {count} matches",
+    "stats": "Key Statistics",
+    "expertAnalysis": "Expert Analysis",
+    "odds": "Compare Odds",
+    "bestOdds": "Best Odds",
+    "share": "Share",
+    "outcomes": {
+      "home": "Home Win",
+      "draw": "Draw",
+      "away": "Away Win",
+      "over": "Over {value}",
+      "under": "Under {value}"
+    }
+  },
+  "league": {
+    "standings": "Standings",
+    "fixtures": "Upcoming Fixtures",
+    "predictions": "Predictions"
+  },
+  "accuracy": {
+    "title": "Accuracy Tracker",
+    "subtitle": "Transparent tracking of our prediction performance",
+    "overall": "Overall Accuracy",
+    "bySport": "By Sport",
+    "last30Days": "Last 30 Days",
+    "recentPredictions": "Recent Predictions",
+    "correct": "Correct",
+    "incorrect": "Incorrect",
+    "pending": "Pending"
+  },
+  "guides": {
+    "title": "Betting Guides",
+    "subtitle": "Learn strategies and tips from our experts",
+    "readMore": "Read More",
+    "related": "Related Guides",
+    "backToGuides": "Back to Guides"
+  },
+  "premium": {
+    "title": "Upgrade to Premium",
+    "subtitle": "Unlock full access to all predictions and expert analysis",
+    "features": {
+      "title": "What You Get",
+      "allPredictions": "All daily predictions",
+      "expertAnalysis": "Expert commentary",
+      "valueBets": "Value bet alerts",
+      "noAds": "Ad-free experience",
+      "emailDigest": "Daily email digest"
+    },
+    "plans": {
+      "monthly": "Monthly",
+      "annual": "Annual",
+      "save": "Save {percent}%"
+    },
+    "price": {
+      "monthly": "GHS 50",
+      "annual": "GHS 500"
+    },
+    "perMonth": "/month",
+    "perYear": "/year",
+    "subscribe": "Subscribe Now",
+    "currentPlan": "Current Plan",
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "q1": "How do I cancel my subscription?",
+      "a1": "You can cancel anytime from your dashboard. Your access continues until the end of your billing period.",
+      "q2": "What payment methods do you accept?",
+      "a2": "We accept mobile money (MTN, Vodafone, AirtelTigo) and card payments via Paystack.",
+      "q3": "Is there a free trial?",
+      "a3": "Free users get access to 3 predictions daily. Upgrade anytime for full access."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome Back",
+      "subtitle": "Sign in to your account",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign In",
+      "forgotPassword": "Forgot password?",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up"
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Start making smarter bets today",
+      "name": "Full Name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "submit": "Create Account",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in"
+    },
+    "errors": {
+      "invalidCredentials": "Invalid email or password",
+      "emailExists": "An account with this email already exists",
+      "weakPassword": "Password must be at least 8 characters",
+      "passwordMismatch": "Passwords do not match",
+      "required": "This field is required",
+      "invalidEmail": "Please enter a valid email address"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subscription": {
+      "title": "Subscription",
+      "status": "Status",
+      "active": "Active",
+      "expired": "Expired",
+      "free": "Free",
+      "expiresOn": "Expires on {date}",
+      "upgrade": "Upgrade to Premium"
+    },
+    "savedPredictions": "Saved Predictions",
+    "noSaved": "You haven't saved any predictions yet.",
+    "preferences": {
+      "title": "Preferences",
+      "emailDigest": "Daily email digest",
+      "language": "Language"
+    },
+    "security": {
+      "title": "Security",
+      "changePassword": "Change Password",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm New Password",
+      "update": "Update Password"
+    }
+  },
+  "admin": {
+    "nav": {
+      "predictions": "Predictions",
+      "users": "Users",
+      "guides": "Guides"
+    },
+    "predictions": {
+      "title": "Manage Predictions",
+      "addNote": "Add Expert Note",
+      "editNote": "Edit Note",
+      "noNote": "No expert note"
+    },
+    "users": {
+      "title": "Manage Users",
+      "search": "Search users...",
+      "role": "Role",
+      "subscription": "Subscription",
+      "actions": "Actions"
+    },
+    "guides": {
+      "title": "Manage Guides",
+      "create": "Create Guide",
+      "edit": "Edit",
+      "delete": "Delete",
+      "confirmDelete": "Are you sure you want to delete this guide?"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Retry",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "search": "Search",
+    "noResults": "No results found",
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "yesterday": "Yesterday"
+  },
+  "footer": {
+    "disclaimer": "Bet responsibly. 18+ only. Gambling can be addictive. Please play within your limits.",
+    "copyright": "© {year} OddsIQ. All rights reserved.",
+    "links": {
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "contact": "Contact Us"
+    }
+  },
+  "errors": {
+    "notFound": {
+      "title": "Page Not Found",
+      "message": "The page you're looking for doesn't exist.",
+      "home": "Go Home"
+    },
+    "unauthorized": {
+      "title": "Unauthorized",
+      "message": "You don't have permission to access this page."
+    }
+  }
+}

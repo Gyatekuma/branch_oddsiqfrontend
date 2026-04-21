@@ -1,0 +1,256 @@
+{
+  "app": {
+    "name": "OddsIQ",
+    "tagline": "Pronostics Sportifs Intelligents"
+  },
+  "nav": {
+    "home": "Accueil",
+    "predictions": "Pronostics",
+    "leagues": "Ligues",
+    "accuracy": "Fiabilité",
+    "guides": "Guides",
+    "premium": "Premium",
+    "login": "Connexion",
+    "register": "S'inscrire",
+    "dashboard": "Tableau de bord",
+    "logout": "Déconnexion",
+    "admin": "Admin"
+  },
+  "home": {
+    "hero": {
+      "title": "Pronostics Sportifs Basés sur les Données",
+      "subtitle": "Analyses d'experts, cotes en temps réel et insights IA pour des paris plus intelligents.",
+      "cta": "Commencer Gratuitement"
+    },
+    "topPicks": "Meilleurs Choix du Jour",
+    "valueBets": "Paris de Valeur",
+    "valueBetsCount": "{count} paris de valeur aujourd'hui",
+    "featuredPredictions": "Pronostics en Vedette",
+    "accuracySnapshot": "Notre Fiabilité",
+    "accuracyThisMonth": "{percent}% de réussite ce mois",
+    "viewAll": "Voir Tout"
+  },
+  "predictions": {
+    "title": "Pronostics",
+    "filters": {
+      "sport": "Sport",
+      "league": "Ligue",
+      "date": "Date",
+      "all": "Tous",
+      "leagueType": "Type de Compétition",
+      "allCompetitions": "Toutes les Compétitions",
+      "domestic": "Ligues Nationales",
+      "international": "Tout International",
+      "internationalClub": "Compétitions de Clubs",
+      "internationalNational": "Équipes Nationales"
+    },
+    "sports": {
+      "football": "Football",
+      "basketball": "Basketball",
+      "tennis": "Tennis"
+    },
+    "noResults": "Aucun pronostic disponible pour les filtres sélectionnés.",
+    "loadMore": "Charger Plus"
+  },
+  "match": {
+    "kickoff": "Coup d'envoi",
+    "prediction": "Notre Pronostic",
+    "confidence": "Confiance",
+    "valueBet": "Pari de Valeur",
+    "form": "Forme Récente",
+    "h2h": "Confrontations Directes",
+    "lastMatches": "{count} derniers matchs",
+    "stats": "Statistiques Clés",
+    "expertAnalysis": "Analyse d'Expert",
+    "odds": "Comparer les Cotes",
+    "bestOdds": "Meilleures Cotes",
+    "share": "Partager",
+    "outcomes": {
+      "home": "Victoire Domicile",
+      "draw": "Match Nul",
+      "away": "Victoire Extérieur",
+      "over": "Plus de {value}",
+      "under": "Moins de {value}"
+    }
+  },
+  "league": {
+    "standings": "Classement",
+    "fixtures": "Matchs à Venir",
+    "predictions": "Pronostics"
+  },
+  "accuracy": {
+    "title": "Suivi de Fiabilité",
+    "subtitle": "Suivi transparent de la performance de nos pronostics",
+    "overall": "Fiabilité Globale",
+    "bySport": "Par Sport",
+    "last30Days": "30 Derniers Jours",
+    "recentPredictions": "Pronostics Récents",
+    "correct": "Correct",
+    "incorrect": "Incorrect",
+    "pending": "En attente"
+  },
+  "guides": {
+    "title": "Guides de Paris",
+    "subtitle": "Apprenez des stratégies et conseils de nos experts",
+    "readMore": "Lire la Suite",
+    "related": "Guides Connexes",
+    "backToGuides": "Retour aux Guides"
+  },
+  "premium": {
+    "title": "Passer à Premium",
+    "subtitle": "Débloquez l'accès complet à tous les pronostics et analyses d'experts",
+    "features": {
+      "title": "Ce que Vous Obtenez",
+      "allPredictions": "Tous les pronostics quotidiens",
+      "expertAnalysis": "Commentaires d'experts",
+      "valueBets": "Alertes paris de valeur",
+      "noAds": "Expérience sans publicité",
+      "emailDigest": "Résumé quotidien par email"
+    },
+    "plans": {
+      "monthly": "Mensuel",
+      "annual": "Annuel",
+      "save": "Économisez {percent}%"
+    },
+    "price": {
+      "monthly": "50 GHS",
+      "annual": "500 GHS"
+    },
+    "perMonth": "/mois",
+    "perYear": "/an",
+    "subscribe": "S'abonner Maintenant",
+    "currentPlan": "Plan Actuel",
+    "faq": {
+      "title": "Questions Fréquentes",
+      "q1": "Comment puis-je annuler mon abonnement ?",
+      "a1": "Vous pouvez annuler à tout moment depuis votre tableau de bord. Votre accès continue jusqu'à la fin de votre période de facturation.",
+      "q2": "Quels modes de paiement acceptez-vous ?",
+      "a2": "Nous acceptons le mobile money (MTN, Vodafone, AirtelTigo) et les paiements par carte via Paystack.",
+      "q3": "Y a-t-il un essai gratuit ?",
+      "a3": "Les utilisateurs gratuits ont accès à 3 pronostics par jour. Passez à Premium à tout moment pour un accès complet."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Bon Retour",
+      "subtitle": "Connectez-vous à votre compte",
+      "email": "Email",
+      "password": "Mot de passe",
+      "submit": "Se Connecter",
+      "forgotPassword": "Mot de passe oublié ?",
+      "noAccount": "Vous n'avez pas de compte ?",
+      "signUp": "S'inscrire"
+    },
+    "register": {
+      "title": "Créer un Compte",
+      "subtitle": "Commencez à parier plus intelligemment dès aujourd'hui",
+      "name": "Nom Complet",
+      "email": "Email",
+      "password": "Mot de passe",
+      "confirmPassword": "Confirmer le Mot de passe",
+      "submit": "Créer un Compte",
+      "hasAccount": "Vous avez déjà un compte ?",
+      "signIn": "Se connecter"
+    },
+    "errors": {
+      "invalidCredentials": "Email ou mot de passe invalide",
+      "emailExists": "Un compte avec cet email existe déjà",
+      "weakPassword": "Le mot de passe doit contenir au moins 8 caractères",
+      "passwordMismatch": "Les mots de passe ne correspondent pas",
+      "required": "Ce champ est requis",
+      "invalidEmail": "Veuillez entrer une adresse email valide"
+    }
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "subscription": {
+      "title": "Abonnement",
+      "status": "Statut",
+      "active": "Actif",
+      "expired": "Expiré",
+      "free": "Gratuit",
+      "expiresOn": "Expire le {date}",
+      "upgrade": "Passer à Premium"
+    },
+    "savedPredictions": "Pronostics Sauvegardés",
+    "noSaved": "Vous n'avez pas encore sauvegardé de pronostics.",
+    "preferences": {
+      "title": "Préférences",
+      "emailDigest": "Résumé quotidien par email",
+      "language": "Langue"
+    },
+    "security": {
+      "title": "Sécurité",
+      "changePassword": "Changer le Mot de Passe",
+      "currentPassword": "Mot de Passe Actuel",
+      "newPassword": "Nouveau Mot de Passe",
+      "confirmPassword": "Confirmer le Nouveau Mot de Passe",
+      "update": "Mettre à Jour"
+    }
+  },
+  "admin": {
+    "nav": {
+      "predictions": "Pronostics",
+      "users": "Utilisateurs",
+      "guides": "Guides"
+    },
+    "predictions": {
+      "title": "Gérer les Pronostics",
+      "addNote": "Ajouter une Note d'Expert",
+      "editNote": "Modifier la Note",
+      "noNote": "Pas de note d'expert"
+    },
+    "users": {
+      "title": "Gérer les Utilisateurs",
+      "search": "Rechercher des utilisateurs...",
+      "role": "Rôle",
+      "subscription": "Abonnement",
+      "actions": "Actions"
+    },
+    "guides": {
+      "title": "Gérer les Guides",
+      "create": "Créer un Guide",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce guide ?"
+    }
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur s'est produite",
+    "retry": "Réessayer",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "close": "Fermer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "search": "Rechercher",
+    "noResults": "Aucun résultat trouvé",
+    "today": "Aujourd'hui",
+    "tomorrow": "Demain",
+    "yesterday": "Hier"
+  },
+  "footer": {
+    "disclaimer": "Pariez de manière responsable. 18+ uniquement. Le jeu peut créer une dépendance. Veuillez jouer dans vos limites.",
+    "copyright": "© {year} OddsIQ. Tous droits réservés.",
+    "links": {
+      "privacy": "Politique de Confidentialité",
+      "terms": "Conditions d'Utilisation",
+      "contact": "Nous Contacter"
+    }
+  },
+  "errors": {
+    "notFound": {
+      "title": "Page Non Trouvée",
+      "message": "La page que vous recherchez n'existe pas.",
+      "home": "Retour à l'Accueil"
+    },
+    "unauthorized": {
+      "title": "Non Autorisé",
+      "message": "Vous n'avez pas la permission d'accéder à cette page."
+    }
+  }
+}
