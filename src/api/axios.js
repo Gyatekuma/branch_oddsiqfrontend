@@ -5,14 +5,14 @@ import router from '@/router'
 // Use empty baseURL in development to use Vite's proxy (avoids CORS issues)
 // In production, use the full API URL
 const isDev = import.meta.env.DEV
-const baseURL = isDev ? '' : (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000')
+const PROD_API_URL = 'https://edi-predictions-backend.vercel.app'
+const baseURL = isDev ? '' : (import.meta.env.VITE_API_BASE_URL || PROD_API_URL)
 
 const api = axios.create({
   baseURL,
   headers: {
     'Content-Type': 'application/json'
-  },
-  withCredentials: true // For httpOnly refresh token cookie
+  }
 })
 
 // Request interceptor - attach access token and log requests
