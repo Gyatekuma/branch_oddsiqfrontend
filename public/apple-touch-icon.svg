@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
+  <rect width="180" height="180" rx="40" fill="#111111"/>
+  <text
+    x="90" y="132"
+    font-family="'Arial Black', 'Impact', Arial, sans-serif"
+    font-weight="900"
+    font-size="118"
+    fill="#22c55e"
+    text-anchor="middle"
+    dominant-baseline="auto"
+    letter-spacing="-2"
+  >E</text>
+</svg>

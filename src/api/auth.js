@@ -6,8 +6,10 @@ export const authApi = {
     return response.data.data
   },
 
-  async register(email, password) {
-    const response = await api.post('/api/auth/register', { email, password })
+  async register(email, password, firstName, lastName, otherNames) {
+    const payload = { email, password, first_name: firstName, last_name: lastName }
+    if (otherNames) payload.other_names = otherNames
+    const response = await api.post('/api/auth/register', payload)
     return response.data.data
   },
 

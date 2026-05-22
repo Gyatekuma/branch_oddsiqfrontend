@@ -1,11 +1,12 @@
 {
   "app": {
-    "name": "OddsIQ",
-    "tagline": "Smart Sports Predictions"
+    "name": "edi predictions",
+    "tagline": "Smarter predictions. Better results."
   },
   "nav": {
     "home": "Home",
     "predictions": "Predictions",
+    "markets": "Markets",
     "leagues": "Leagues",
     "accuracy": "Accuracy",
     "guides": "Guides",
@@ -18,9 +19,9 @@
   },
   "home": {
     "hero": {
-      "title": "Data-Driven Sports Predictions",
-      "subtitle": "Expert analysis, real-time odds, and AI-powered insights for smarter betting decisions.",
-      "cta": "Get Started Free"
+      "title": "Smarter Predictions. Better Results.",
+      "subtitle": "AI-powered match predictions across 18+ leagues — backed by data, not guesses.",
+      "cta": "Explore Predictions"
     },
     "topPicks": "Today's Top Picks",
     "valueBets": "Value Bets",
@@ -235,7 +236,7 @@
   },
   "footer": {
     "disclaimer": "Bet responsibly. 18+ only. Gambling can be addictive. Please play within your limits.",
-    "copyright": "© {year} OddsIQ. All rights reserved.",
+    "copyright": "© {year} edi predictions. All rights reserved.",
     "links": {
       "privacy": "Privacy Policy",
       "terms": "Terms of Service",

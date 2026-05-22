@@ -14,6 +14,9 @@ import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import DashboardView from '@/views/DashboardView.vue'
 
+// Lazy load markets view (built next)
+const MarketsView = () => import('@/views/MarketsView.vue')
+
 // Lazy load admin views
 const AdminLayout = () => import('@/views/admin/AdminLayout.vue')
 const AdminPredictions = () => import('@/views/admin/AdminPredictions.vue')
@@ -32,6 +35,12 @@ const routes = [
     name: 'predictions',
     component: PredictionsView,
     meta: { title: 'Predictions' }
+  },
+  {
+    path: '/markets',
+    name: 'markets',
+    component: MarketsView,
+    meta: { title: 'Markets' }
   },
   {
     path: '/match/:id',
@@ -140,7 +149,7 @@ router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
 
   // Update document title
-  const appName = import.meta.env.VITE_APP_NAME || 'OddsIQ'
+  const appName = import.meta.env.VITE_APP_NAME || 'edi predictions'
   document.title = to.meta.title ? `${to.meta.title} | ${appName}` : appName
 
   // Check authentication
@@ -155,7 +164,7 @@ router.beforeEach(async (to, from, next) => {
 
   // Redirect authenticated users away from guest pages
   if (to.meta.guest && authStore.isAuthenticated) {
-    return next({ name: 'dashboard' })
+    return next({ name: 'predictions' })
   }
 
   next()

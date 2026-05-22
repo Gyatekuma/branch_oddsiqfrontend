@@ -94,6 +94,7 @@ export const usePredictionsStore = defineStore('predictions', () => {
   }
 
   async function fetchById(id) {
+    currentPrediction.value = null
     loading.value = true
     error.value = null
     console.log('[PredictionsStore] fetchById called with:', id)
@@ -113,13 +114,27 @@ export const usePredictionsStore = defineStore('predictions', () => {
   }
 
   async function fetchTopPicks(limit = 3) {
+    const CACHE_KEY = `edi_top_picks_${limit}`
+    const TTL = 5 * 60 * 1000
+
+    // Serve stale data immediately so the hero card renders without waiting
+    try {
+      const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null')
+      if (cached && Date.now() - cached.ts < TTL && cached.data?.length) {
+        topPicks.value = cached.data
+      }
+    } catch {}
+
     try {
       const response = await predictionsApi.getTopPicks(limit)
       topPicks.value = response.predictions
+      try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data: response.predictions }))
+      } catch {}
       return response.predictions
     } catch (err) {
       console.error('Failed to fetch top picks:', err)
-      return []
+      return topPicks.value
     }
   }
 

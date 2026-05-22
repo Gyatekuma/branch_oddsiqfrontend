@@ -2,8 +2,8 @@ import api from './axios'
 
 export const accuracyApi = {
   // Get comprehensive accuracy stats
-  async getOverall() {
-    const response = await api.get('/api/accuracy/')
+  async getOverall(params = {}) {
+    const response = await api.get('/api/accuracy/', { params })
     const data = response.data.data
 
     return {

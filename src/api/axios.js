@@ -23,18 +23,6 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${authStore.accessToken}`
     }
 
-    // Log request details
-    const fullUrl = config.params
-      ? `${config.url}?${new URLSearchParams(config.params).toString()}`
-      : config.url
-    console.log(`[API Request] ${config.method?.toUpperCase()} ${fullUrl}`)
-    if (config.params && Object.keys(config.params).length > 0) {
-      console.log('[API Request Params]', JSON.stringify(config.params, null, 2))
-    }
-    if (config.data) {
-      console.log('[API Request Body]', JSON.stringify(config.data, null, 2))
-    }
-
     return config
   },
   (error) => {
@@ -59,12 +47,6 @@ const processQueue = (error, token = null) => {
 
 api.interceptors.response.use(
   (response) => {
-    // Log successful response
-    console.log(`[API Response] ${response.status} ${response.config.method?.toUpperCase()} ${response.config.url}`)
-    console.log('[API Response Headers]', Object.fromEntries(
-      Object.entries(response.headers).filter(([key]) => !key.startsWith('x-'))
-    ))
-    console.log('[API Response Data]', JSON.stringify(response.data, null, 2))
     return response
   },
   async (error) => {

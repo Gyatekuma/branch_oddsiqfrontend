@@ -3,25 +3,29 @@
 @tailwind utilities;
 
 :root {
-  --color-bg: #0a0e1a;
-  --color-surface: #111827;
-  --color-border: #1f2937;
-  --color-text: #f3f4f6;
-  --color-muted: #6b7280;
-  --color-accent: #00e676;
-  --color-gold: #f59e0b;
+  --color-bg: #06080f;
+  --color-surface: #0d1018;
+  --color-border: #1a2035;
+  --color-text: #f1f5f9;
+  --color-muted: #64748b;
+  --color-accent: #d4a017;
+  --color-gold: #d4a017;
   --color-win: #22c55e;
   --color-draw: #eab308;
   --color-loss: #ef4444;
+  --color-info: #3b82f6;
 }
 
 @layer base {
   html {
     @apply scroll-smooth;
+    overflow-x: clip;
+    overflow-y: scroll;
   }
 
   body {
     @apply bg-bg text-text font-body;
+    overflow-x: clip;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -35,11 +39,11 @@
   }
 
   .card {
-    @apply bg-surface border border-border rounded-lg;
+    @apply bg-surface border border-border rounded-xl;
   }
 
   .card-hover {
-    @apply card transition-all duration-200 hover:border-accent/50 hover:shadow-lg hover:shadow-accent/5;
+    @apply card transition-all duration-200 hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5;
   }
 
   .section-header {
@@ -63,17 +67,33 @@
   }
 
   .gradient-accent {
-    @apply bg-gradient-to-r from-accent to-emerald-400;
+    @apply bg-gradient-to-r from-accent to-amber-500;
   }
 
   .gradient-gold {
-    @apply bg-gradient-to-r from-gold to-amber-400;
+    @apply bg-gradient-to-r from-gold to-amber-500;
+  }
+
+  /* Gold border using pseudo-element trick */
+  .gold-border-card {
+    @apply relative rounded-xl;
+    background: linear-gradient(#0d1018, #0d1018) padding-box,
+                linear-gradient(135deg, #d4a017, #f59e0b44, #d4a017) border-box;
+    border: 1px solid transparent;
+  }
+
+  /* Hero grid background */
+  .hero-grid {
+    background-image:
+      linear-gradient(rgba(212, 160, 23, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212, 160, 23, 0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
   }
 }
 
 @layer utilities {
   .text-gradient-accent {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-accent to-emerald-400;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-accent to-amber-400;
   }
 
   .text-gradient-gold {
@@ -97,8 +117,8 @@
 /* Custom scrollbar for desktop */
 @media (min-width: 768px) {
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
   }
 
   ::-webkit-scrollbar-track {
@@ -106,10 +126,11 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-border rounded-full;
+    background: #2e3f5c;
+    border-radius: 9999px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-muted;
+    background: #64748b;
   }
 }

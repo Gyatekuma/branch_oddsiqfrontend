@@ -1,6 +1,6 @@
 {
   "app": {
-    "name": "OddsIQ",
+    "name": "edi predictions",
     "tagline": "Pronostics Sportifs Intelligents"
   },
   "nav": {
@@ -235,7 +235,7 @@
   },
   "footer": {
     "disclaimer": "Pariez de manière responsable. 18+ uniquement. Le jeu peut créer une dépendance. Veuillez jouer dans vos limites.",
-    "copyright": "© {year} OddsIQ. Tous droits réservés.",
+    "copyright": "© {year} edi predictions. Tous droits réservés.",
     "links": {
       "privacy": "Politique de Confidentialité",
       "terms": "Conditions d'Utilisation",

@@ -62,6 +62,14 @@ export const predictionsApi = {
     return {
       predictions: data.predictions || data || []
     }
+  },
+
+  async getTicker() {
+    const response = await api.get('/api/predictions/ticker')
+    const data = response.data.data
+    return {
+      predictions: data.predictions || []
+    }
   }
 }
 

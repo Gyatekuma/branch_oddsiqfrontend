@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { usePredictionsStore } from '@/stores/predictions'
 import { usePremium } from '@/composables/usePremium'
@@ -9,7 +9,7 @@ import PredictionCard from '@/components/predictions/PredictionCard.vue'
 import PremiumBlur from '@/components/predictions/PremiumBlur.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppSkeleton from '@/components/ui/AppSkeleton.vue'
-import { FunnelIcon, CalendarIcon, GlobeAltIcon } from '@heroicons/vue/24/outline'
+import { FunnelIcon, CalendarIcon, GlobeAltIcon, BoltIcon, FireIcon, ArrowsUpDownIcon } from '@heroicons/vue/24/outline'
 
 const { t } = useI18n()
 const predictionsStore = usePredictionsStore()
@@ -17,9 +17,57 @@ const authStore = useAuthStore()
 const { canSeePrediction } = usePremium()
 
 const selectedSport = ref(null)
-const selectedDate = ref('')  // Empty = no date filter (show all)
-const selectedLeagueType = ref('')  // Empty = all types
+const selectedDate = ref('')
+const selectedLeagueType = ref('')
 const showFilters = ref(false)
+const dateInputRef = useTemplateRef('dateInput')
+
+// ── Client-side filters ───────────────────────────────────────
+const confidenceFilter = ref('all')  // all | high | medium | low | value
+const sortBy = ref('kickoff')        // kickoff | confidence
+
+const confidenceChips = [
+  { key: 'all',    label: 'All' },
+  { key: 'high',   label: 'High 70%+' },
+  { key: 'medium', label: 'Medium' },
+  { key: 'low',    label: 'Low' },
+  { key: 'value',  label: 'Value Bets' },
+]
+
+function normaliseConf(raw) {
+  let s = Number(raw ?? 0)
+  while (s > 100) s /= 100
+  return Math.round(s)
+}
+
+const filteredAndSorted = computed(() => {
+  let list = [...(predictionsStore.predictions || [])]
+
+  // Confidence / value filter
+  if (confidenceFilter.value === 'high') {
+    list = list.filter(p => normaliseConf(p.confidence_score) >= 70)
+  } else if (confidenceFilter.value === 'medium') {
+    list = list.filter(p => { const c = normaliseConf(p.confidence_score); return c >= 55 && c < 70 })
+  } else if (confidenceFilter.value === 'low') {
+    list = list.filter(p => normaliseConf(p.confidence_score) < 55)
+  } else if (confidenceFilter.value === 'value') {
+    list = list.filter(p => p.is_value_bet)
+  }
+
+  // Sort
+  if (sortBy.value === 'confidence') {
+    list.sort((a, b) => normaliseConf(b.confidence_score) - normaliseConf(a.confidence_score))
+  } else {
+    // kickoff ascending
+    list.sort((a, b) => {
+      const ta = new Date(a.fixture?.kickoff_at || a.kickoff_at || 0).getTime()
+      const tb = new Date(b.fixture?.kickoff_at || b.kickoff_at || 0).getTime()
+      return ta - tb
+    })
+  }
+
+  return list
+})
 
 // League type options (computed for i18n)
 const leagueTypeOptions = computed(() => [
@@ -92,46 +140,66 @@ function clearFilters() {
 
       <!-- Filters -->
       <div class="mb-6 space-y-4">
-        <div class="flex items-center justify-between">
-          <SportsTabs
-            :model-value="selectedSport"
-            @update:model-value="handleSportChange"
-          />
-
+        <div class="flex items-center gap-2">
+          <div class="flex-1 min-w-0">
+            <SportsTabs
+              :model-value="selectedSport"
+              @update:model-value="handleSportChange"
+            />
+          </div>
           <button
-            class="md:hidden p-2 text-muted hover:text-text"
+            class="md:hidden p-2 text-muted hover:text-text shrink-0"
             @click="showFilters = !showFilters"
           >
             <FunnelIcon class="w-5 h-5" />
           </button>
         </div>
 
-        <div :class="['flex flex-wrap items-center gap-4', showFilters ? 'block' : 'hidden md:flex']">
-          <!-- League Type Filter -->
-          <div class="relative">
-            <GlobeAltIcon class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted pointer-events-none" />
-            <select
-              v-model="selectedLeagueType"
-              class="input-field pl-10 pr-8 py-2 w-full md:w-auto cursor-pointer appearance-none bg-surface"
-            >
-              <option
-                v-for="option in leagueTypeOptions"
-                :key="option.value"
-                :value="option.value"
-              >
-                {{ option.label }}
-              </option>
-            </select>
+        <div :class="['space-y-3', showFilters ? 'block' : 'hidden md:block']">
+          <!-- Row 1: server-side filters -->
+          <div class="flex flex-wrap items-center gap-3">
+            <!-- League Type Filter -->
+            <div class="relative">
+              <GlobeAltIcon class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted pointer-events-none" />
+              <select v-model="selectedLeagueType"
+                class="input-field pl-10 pr-8 py-2 w-full md:w-auto cursor-pointer appearance-none bg-surface text-sm">
+                <option v-for="option in leagueTypeOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
+              </select>
+            </div>
+
+            <!-- Date picker -->
+            <div class="relative">
+              <CalendarIcon class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted pointer-events-none z-10" />
+              <input ref="dateInput" v-model="selectedDate" type="date"
+                class="input-field pl-10 pr-4 py-2 w-full md:w-auto cursor-pointer text-sm"
+                @click="dateInputRef?.showPicker()">
+            </div>
+
+            <!-- Sort -->
+            <button
+              @click="sortBy = sortBy === 'kickoff' ? 'confidence' : 'kickoff'"
+              class="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-border bg-surface text-sm text-muted hover:text-text hover:border-accent/40 transition-all">
+              <ArrowsUpDownIcon class="w-4 h-4" />
+              {{ sortBy === 'kickoff' ? 'By Time' : 'By Confidence' }}
+            </button>
           </div>
 
-          <!-- Date picker -->
-          <div class="relative">
-            <CalendarIcon class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted pointer-events-none" />
-            <input
-              v-model="selectedDate"
-              type="date"
-              class="input-field pl-10 pr-4 py-2 w-full md:w-auto cursor-pointer"
-            >
+          <!-- Row 2: confidence chips -->
+          <div class="flex flex-wrap items-center gap-2">
+            <button v-for="chip in confidenceChips" :key="chip.key"
+              @click="confidenceFilter = chip.key"
+              :class="[
+                'px-3 py-1.5 rounded-full text-xs font-semibold border transition-all',
+                confidenceFilter === chip.key
+                  ? 'bg-accent text-bg border-accent'
+                  : 'bg-surface border-border text-muted hover:border-accent/40 hover:text-text'
+              ]">
+              <FireIcon v-if="chip.key === 'value'" class="w-3 h-3 inline mr-1 text-gold" />
+              {{ chip.label }}
+            </button>
+            <span v-if="confidenceFilter !== 'all' || sortBy !== 'kickoff'" class="text-xs text-muted ml-1">
+              {{ filteredAndSorted.length }} shown
+            </span>
           </div>
         </div>
       </div>
@@ -151,9 +219,15 @@ function clearFilters() {
         </AppButton>
       </div>
 
+      <!-- Empty after filter -->
+      <div v-else-if="filteredAndSorted.length === 0" class="card p-12 text-center">
+        <p class="text-muted text-lg mb-4">No predictions match this filter</p>
+        <AppButton variant="outline" @click="confidenceFilter = 'all'">Clear Filter</AppButton>
+      </div>
+
       <!-- Predictions grid -->
       <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <template v-for="(prediction, index) in predictionsStore.predictions" :key="prediction.id">
+        <template v-for="(prediction, index) in filteredAndSorted" :key="prediction.id">
           <PredictionCard
             v-if="canSeePrediction(index)"
             :prediction="prediction"

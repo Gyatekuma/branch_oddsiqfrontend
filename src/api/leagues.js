@@ -53,7 +53,8 @@ export const leaguesApi = {
     const data = response.data.data
     return {
       predictions: data.predictions || [],
-      total: data.total || 0
+      total: data.total || 0,
+      total_pages: data.total_pages || 1
     }
   }
 }

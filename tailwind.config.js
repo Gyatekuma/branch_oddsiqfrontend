@@ -7,16 +7,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        bg: '#0a0e1a',
-        surface: '#111827',
-        border: '#1f2937',
-        text: '#f3f4f6',
-        muted: '#6b7280',
-        accent: '#00e676',
-        gold: '#f59e0b',
+        bg: '#06080f',
+        surface: '#0d1018',
+        border: '#1a2035',
+        text: '#f1f5f9',
+        muted: '#64748b',
+        accent: '#d4a017',
+        gold: '#d4a017',
         win: '#22c55e',
         draw: '#eab308',
         loss: '#ef4444',
+        info: '#3b82f6',
       },
       fontFamily: {
         display: ['Barlow Condensed', 'sans-serif'],
@@ -26,15 +27,25 @@ export default {
         'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
         'fade-in': 'fade-in 0.3s ease-out',
         'slide-up': 'slide-up 0.3s ease-out',
+        'ticker': 'ticker 30s linear infinite',
+        'float': 'float 4s ease-in-out infinite',
       },
       keyframes: {
         'pulse-glow': {
           '0%, 100%': {
-            boxShadow: '0 0 5px #00e676, 0 0 10px #00e676, 0 0 15px #00e676',
+            boxShadow: '0 0 5px #d4a017, 0 0 10px #d4a017, 0 0 15px #d4a017',
           },
           '50%': {
-            boxShadow: '0 0 10px #00e676, 0 0 20px #00e676, 0 0 30px #00e676',
+            boxShadow: '0 0 10px #d4a017, 0 0 20px #d4a017, 0 0 30px #d4a017',
           },
+        },
+        ticker: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+        'float': {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-8px)' },
         },
         'fade-in': {
           '0%': { opacity: '0' },

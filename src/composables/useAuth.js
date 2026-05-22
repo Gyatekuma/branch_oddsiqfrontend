@@ -16,7 +16,7 @@ export function useAuth() {
   async function login(email, password) {
     try {
       await authStore.login(email, password)
-      const redirect = route.query.redirect || '/dashboard'
+      const redirect = route.query.redirect || '/predictions'
       router.push(redirect)
       return true
     } catch (err) {
@@ -24,10 +24,10 @@ export function useAuth() {
     }
   }
 
-  async function register(name, email, password) {
+  async function register(firstName, lastName, otherNames, email, password) {
     try {
-      await authStore.register(name, email, password)
-      router.push('/dashboard')
+      await authStore.register(email, password, firstName, lastName, otherNames)
+      router.push('/predictions')
       return true
     } catch (err) {
       return false
@@ -36,7 +36,7 @@ export function useAuth() {
 
   async function logout() {
     await authStore.logout()
-    router.push('/')
+    router.push('/predictions')
   }
 
   function clearError() {

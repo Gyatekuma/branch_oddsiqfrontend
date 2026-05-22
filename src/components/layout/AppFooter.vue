@@ -1,7 +1,6 @@
 <script setup>
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
-import { ChartBarIcon } from '@heroicons/vue/24/outline'
 
 const { t } = useI18n()
 const currentYear = new Date().getFullYear()
@@ -20,16 +19,12 @@ const footerLinks = [
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
         <!-- Brand -->
         <div class="md:col-span-2">
-          <RouterLink to="/" class="flex items-center gap-2 mb-4">
-            <div class="w-8 h-8 rounded-lg gradient-accent flex items-center justify-center">
-              <ChartBarIcon class="w-5 h-5 text-bg" />
-            </div>
-            <span class="text-xl font-display font-bold text-text">
-              Odds<span class="text-accent">IQ</span>
-            </span>
+          <RouterLink to="/" class="flex items-end gap-1.5 mb-4">
+            <span class="text-accent text-5xl leading-none font-display font-bold tracking-tight">EDI</span>
+            <span class="text-white font-normal text-2xl leading-none font-display mb-0.5">Predictions</span>
           </RouterLink>
-          <p class="text-sm text-muted max-w-sm">
-            {{ t('app.tagline') }}. Expert analysis and AI-powered insights for smarter betting decisions.
+          <p class="text-sm text-muted max-w-sm leading-relaxed">
+            {{ t('app.tagline') }}. AI-powered insights across 18+ leagues.
           </p>
         </div>
 
@@ -40,6 +35,11 @@ const footerLinks = [
             <li>
               <RouterLink to="/predictions" class="text-sm text-muted hover:text-accent transition-colors">
                 {{ t('nav.predictions') }}
+              </RouterLink>
+            </li>
+            <li>
+              <RouterLink to="/markets" class="text-sm text-muted hover:text-accent transition-colors">
+                {{ t('nav.markets') }}
               </RouterLink>
             </li>
             <li>

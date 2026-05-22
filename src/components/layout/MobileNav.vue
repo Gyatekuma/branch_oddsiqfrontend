@@ -5,12 +5,14 @@ import { useAuth } from '@/composables/useAuth'
 import {
   HomeIcon,
   ChartBarSquareIcon,
+  PresentationChartLineIcon,
   TrophyIcon,
   UserCircleIcon
 } from '@heroicons/vue/24/outline'
 import {
   HomeIcon as HomeIconSolid,
   ChartBarSquareIcon as ChartBarSquareIconSolid,
+  PresentationChartLineIcon as PresentationChartLineIconSolid,
   TrophyIcon as TrophyIconSolid,
   UserCircleIcon as UserCircleIconSolid
 } from '@heroicons/vue/24/solid'
@@ -33,7 +35,13 @@ const navItems = [
     iconActive: ChartBarSquareIconSolid
   },
   {
-    name: 'nav.leagues',
+    name: 'nav.markets',
+    to: '/markets',
+    icon: PresentationChartLineIcon,
+    iconActive: PresentationChartLineIconSolid
+  },
+  {
+    name: 'nav.accuracy',
     to: '/accuracy',
     icon: TrophyIcon,
     iconActive: TrophyIconSolid
@@ -42,36 +50,41 @@ const navItems = [
     name: 'nav.dashboard',
     to: isAuthenticated.value ? '/dashboard' : '/login',
     icon: UserCircleIcon,
-    iconActive: UserCircleIconSolid,
-    authRequired: false
+    iconActive: UserCircleIconSolid
   }
 ]
 
 function isActive(path) {
-  if (path === '/') {
-    return route.path === '/'
-  }
+  if (path === '/') return route.path === '/'
   return route.path.startsWith(path)
 }
 </script>
 
 <template>
-  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-surface border-t border-border safe-area-bottom">
-    <div class="flex items-center justify-around h-16">
+  <nav class="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-surface/95 backdrop-blur-xl border-t border-border safe-area-bottom">
+    <div class="nav-inner flex items-end justify-around px-2">
       <RouterLink
         v-for="item in navItems"
         :key="item.to"
         :to="item.to"
-        :class="[
-          'flex flex-col items-center justify-center flex-1 h-full transition-colors',
-          isActive(item.to) ? 'text-accent' : 'text-muted'
-        ]"
+        class="nav-item flex flex-col items-center justify-end flex-1 pb-2 pt-3 relative"
+        :class="isActive(item.to) ? 'active' : ''"
       >
+        <span
+          v-if="isActive(item.to)"
+          class="active-pill absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full bg-accent"
+        />
         <component
           :is="isActive(item.to) ? item.iconActive : item.icon"
-          class="w-6 h-6 mb-1"
+          class="w-6 h-6 transition-transform"
+          :class="isActive(item.to) ? 'text-accent scale-110' : 'text-muted'"
         />
-        <span class="text-xs font-medium">{{ t(item.name) }}</span>
+        <span
+          class="text-[10px] font-semibold mt-1 tracking-wide transition-colors"
+          :class="isActive(item.to) ? 'text-accent' : 'text-muted'"
+        >
+          {{ t(item.name) }}
+        </span>
       </RouterLink>
     </div>
   </nav>
@@ -79,6 +92,19 @@ function isActive(path) {
 
 <style scoped>
 .safe-area-bottom {
-  padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.nav-inner {
+  height: 60px;
+}
+
+.nav-item {
+  min-width: 0;
+  transition: opacity 0.15s ease;
+}
+
+.nav-item:active {
+  opacity: 0.7;
 }
 </style>

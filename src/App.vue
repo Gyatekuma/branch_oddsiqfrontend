@@ -19,9 +19,9 @@ onMounted(async () => {
     <AppHeader />
 
     <main class="flex-1 pb-20 md:pb-0">
-      <RouterView v-slot="{ Component }">
-        <transition name="fade" mode="out-in">
-          <component :is="Component" />
+      <RouterView v-slot="{ Component, route }">
+        <transition name="fade">
+          <component :is="Component" :key="route.fullPath" />
         </transition>
       </RouterView>
     </main>
@@ -32,11 +32,14 @@ onMounted(async () => {
 </template>
 
 <style>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s ease;
+.fade-enter-active {
+  transition: opacity 0.15s ease;
 }
-
+.fade-leave-active {
+  transition: opacity 0.1s ease;
+  position: absolute;
+  width: 100%;
+}
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
