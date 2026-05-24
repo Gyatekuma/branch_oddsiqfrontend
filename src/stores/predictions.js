@@ -55,7 +55,8 @@ export const usePredictionsStore = defineStore('predictions', () => {
         page: response.page,
         perPage: response.per_page,
         total: response.total,
-        totalPages: response.total_pages
+        totalPages: response.total_pages,
+        totalAvailable: response.total_available ?? response.total
       }
       return response
     } catch (err) {

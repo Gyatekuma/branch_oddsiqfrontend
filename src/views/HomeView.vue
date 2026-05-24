@@ -230,7 +230,7 @@ onMounted(async () => {
   } finally {
     loading.value = false
   }
-  const total = predictionsStore.pagination?.total || 0
+  const total = predictionsStore.pagination?.totalAvailable || predictionsStore.pagination?.total || 0
   if (total > 0) animateCount(total, v => predictionsCount.value = v)
 
   // Non-blocking secondary fetches
@@ -249,11 +249,13 @@ onMounted(async () => {
         if (pct > 0) animateCount(pct, v => accuracyCount.value = v)
       })
       .catch(() => {}),
-    leaguesApi.getBySport('football')
-      .then(({ leagues }) => {
-        const all = Array.isArray(leagues) ? leagues : []
+    Promise.all([
+      leaguesApi.getBySport('football'),
+      leaguesApi.getAll()
+    ]).then(([footballResult, allResult]) => {
+        const footballLeagues = Array.isArray(footballResult.leagues) ? footballResult.leagues : []
         const seen = new Set()
-        leagueSpotlight.value = all
+        leagueSpotlight.value = footballLeagues
           .filter(l => {
             const k = l.name?.toLowerCase()
             if (!k || seen.has(k)) return false
@@ -261,7 +263,11 @@ onMounted(async () => {
             return true
           })
           .slice(0, 10)
-        animateCount(seen.size, v => leaguesCount.value = v, 1200)
+
+        // Count total leagues across all sports
+        const allData = allResult.leagues || {}
+        const totalLeagues = Object.values(allData).reduce((sum, arr) => sum + (Array.isArray(arr) ? arr.length : 0), 0)
+        animateCount(totalLeagues || seen.size, v => leaguesCount.value = v, 1200)
       })
       .catch(() => {}),
   ])
