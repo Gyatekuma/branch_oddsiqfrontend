@@ -72,6 +72,26 @@ function outcomeDesc(o) {
   return ''
 }
 
+// ── Outcome colour map ────────────────────────────────────────
+function outcomeColor(outcome) {
+  if (!outcome) return { text: 'text-accent', bg: 'bg-accent/10', border: 'border-accent/30', ring: 'ring-accent/30', bar: 'bg-accent' }
+  switch (outcome) {
+    case 'yes':   return { text: 'text-win',    bg: 'bg-win/10',    border: 'border-win/30',    ring: 'ring-win/30',    bar: 'bg-win'    }
+    case 'no':    return { text: 'text-loss',   bg: 'bg-loss/10',   border: 'border-loss/30',   ring: 'ring-loss/30',   bar: 'bg-loss'   }
+    case 'over':  return { text: 'text-info',   bg: 'bg-info/10',   border: 'border-info/30',   ring: 'ring-info/30',   bar: 'bg-info'   }
+    case 'under': return { text: 'text-draw',   bg: 'bg-draw/10',   border: 'border-draw/30',   ring: 'ring-draw/30',   bar: 'bg-draw'   }
+    case '1X':    return { text: 'text-win',    bg: 'bg-win/10',    border: 'border-win/30',    ring: 'ring-win/30',    bar: 'bg-win'    }
+    case 'X2':    return { text: 'text-info',   bg: 'bg-info/10',   border: 'border-info/30',   ring: 'ring-info/30',   bar: 'bg-info'   }
+    case '12':    return { text: 'text-accent', bg: 'bg-accent/10', border: 'border-accent/30', ring: 'ring-accent/30', bar: 'bg-accent' }
+    default: {
+      if (outcome.endsWith('_home')) return { text: 'text-win',  bg: 'bg-win/10',  border: 'border-win/30',  ring: 'ring-win/30',  bar: 'bg-win'  }
+      if (outcome.endsWith('_draw')) return { text: 'text-draw', bg: 'bg-draw/10', border: 'border-draw/30', ring: 'ring-draw/30', bar: 'bg-draw' }
+      if (outcome.endsWith('_away')) return { text: 'text-loss', bg: 'bg-loss/10', border: 'border-loss/30', ring: 'ring-loss/30', bar: 'bg-loss' }
+      return { text: 'text-accent', bg: 'bg-accent/10', border: 'border-accent/30', ring: 'ring-accent/30', bar: 'bg-accent' }
+    }
+  }
+}
+
 // ── Layout helpers ────────────────────────────────────────────
 // For binary markets (over/under, btts, corners): find the two outcomes
 const binaryOutcomes = computed(() => {
@@ -158,29 +178,30 @@ const isValueBet = computed(() => props.prediction.is_value_bet)
     <template v-if="isBinary && binaryOutcomes">
       <div class="grid grid-cols-2 gap-2 mb-3">
         <!-- Recommended outcome -->
-        <div class="rounded-lg border-2 border-accent/40 bg-accent/5 p-2.5 text-center">
-          <div class="text-[10px] font-bold text-accent uppercase tracking-wider mb-0.5">Pick</div>
+        <div :class="['rounded-lg border-2 p-2.5 text-center', outcomeColor(binaryOutcomes.recommended.outcome).border, outcomeColor(binaryOutcomes.recommended.outcome).bg]">
+          <div :class="['text-[10px] font-bold uppercase tracking-wider mb-0.5', outcomeColor(binaryOutcomes.recommended.outcome).text]">Pick</div>
           <div class="font-display font-bold text-base text-text leading-tight">
             {{ outcomeLabel(binaryOutcomes.recommended.outcome, lineValue) }}
           </div>
-          <div class="text-xs font-semibold text-accent mt-1">
+          <div :class="['text-xs font-semibold mt-1', outcomeColor(binaryOutcomes.recommended.outcome).text]">
             {{ binaryOutcomes.recPct }}%
           </div>
         </div>
         <!-- Other outcome -->
-        <div class="rounded-lg border border-border bg-surface/50 p-2.5 text-center opacity-70">
-          <div class="text-[10px] font-semibold text-muted uppercase tracking-wider mb-0.5">Alt</div>
+        <div :class="['rounded-lg border p-2.5 text-center opacity-50', outcomeColor(binaryOutcomes.other.outcome).border, outcomeColor(binaryOutcomes.other.outcome).bg]">
+          <div :class="['text-[10px] font-semibold uppercase tracking-wider mb-0.5', outcomeColor(binaryOutcomes.other.outcome).text]">Alt</div>
           <div class="font-display font-bold text-base text-muted leading-tight">
             {{ outcomeLabel(binaryOutcomes.other.outcome, lineValue) }}
           </div>
-          <div class="text-xs text-muted mt-1">
+          <div :class="['text-xs mt-1', outcomeColor(binaryOutcomes.other.outcome).text]">
             {{ binaryOutcomes.otherPct }}%
           </div>
         </div>
       </div>
-      <!-- Probability bar -->
-      <div class="h-1.5 rounded-full bg-border overflow-hidden mb-3">
-        <div class="h-full rounded-full bg-accent transition-all" :style="`width:${binaryOutcomes.recPct}%`" />
+      <!-- Probability bar: rec colour on left, other colour on right -->
+      <div class="h-1.5 rounded-full bg-border overflow-hidden mb-3 flex">
+        <div :class="['h-full rounded-l-full transition-all', outcomeColor(binaryOutcomes.recommended.outcome).bar]" :style="`width:${binaryOutcomes.recPct}%`" />
+        <div :class="['h-full rounded-r-full flex-1 opacity-30', outcomeColor(binaryOutcomes.other.outcome).bar]" />
       </div>
     </template>
 
@@ -191,11 +212,11 @@ const isValueBet = computed(() => props.prediction.is_value_bet)
           :class="[
             'rounded-lg border p-2 text-center transition-all',
             o.outcome === recommendation
-              ? 'border-accent/50 bg-accent/8 ring-1 ring-accent/30'
-              : 'border-border bg-surface/40 opacity-70'
+              ? [outcomeColor(o.outcome).border, outcomeColor(o.outcome).bg, 'ring-1', outcomeColor(o.outcome).ring]
+              : 'border-border bg-surface/40 opacity-50'
           ]"
         >
-          <div :class="['font-display font-bold text-sm leading-none mb-1', o.outcome === recommendation ? 'text-accent' : 'text-muted']">
+          <div :class="['font-display font-bold text-sm leading-none mb-1', o.outcome === recommendation ? outcomeColor(o.outcome).text : 'text-muted']">
             {{ o.outcome }}
           </div>
           <div :class="['text-[11px] font-semibold', o.outcome === recommendation ? 'text-text' : 'text-muted']">
@@ -209,27 +230,27 @@ const isValueBet = computed(() => props.prediction.is_value_bet)
     <!-- ── HT/FT ── -->
     <template v-else-if="isHtFt">
       <div class="mb-3">
-        <!-- Top pick highlighted -->
-        <div class="flex items-center gap-2 p-2.5 rounded-lg border border-accent/30 bg-accent/5 mb-2">
+        <!-- Top pick highlighted, coloured by FT result -->
+        <div :class="['flex items-center gap-2 p-2.5 rounded-lg border mb-2', outcomeColor(htftOutcomes[0]?.outcome).border, outcomeColor(htftOutcomes[0]?.outcome).bg]">
           <div class="flex-1 text-center">
             <div class="text-[10px] text-muted uppercase tracking-wider">Half Time</div>
             <div class="font-display font-bold text-sm text-text">{{ prediction.ht_label || '—' }}</div>
           </div>
-          <div class="text-accent font-bold text-lg">/</div>
+          <div :class="['font-bold text-lg', outcomeColor(htftOutcomes[0]?.outcome).text]">/</div>
           <div class="flex-1 text-center">
             <div class="text-[10px] text-muted uppercase tracking-wider">Full Time</div>
             <div class="font-display font-bold text-sm text-text">{{ prediction.ft_label || '—' }}</div>
           </div>
-          <div v-if="htftOutcomes[0]?.probability" class="text-xs font-bold text-accent ml-1 shrink-0">
+          <div v-if="htftOutcomes[0]?.probability" :class="['text-xs font-bold ml-1 shrink-0', outcomeColor(htftOutcomes[0]?.outcome).text]">
             {{ htftOutcomes[0].probability }}%
           </div>
         </div>
         <!-- Other top outcomes -->
         <div v-if="htftOutcomes.length > 1" class="flex gap-1.5">
           <div v-for="o in htftOutcomes.slice(1)" :key="o.outcome"
-            class="flex-1 flex items-center justify-between px-2 py-1 rounded border border-border bg-surface/40 opacity-60">
-            <span class="text-[11px] font-semibold text-muted">{{ outcomeLabel(o.outcome) }}</span>
-            <span class="text-[11px] text-muted">{{ o.probability != null ? o.probability + '%' : '' }}</span>
+            :class="['flex-1 flex items-center justify-between px-2 py-1 rounded border opacity-50', outcomeColor(o.outcome).border, outcomeColor(o.outcome).bg]">
+            <span :class="['text-[11px] font-semibold', outcomeColor(o.outcome).text]">{{ outcomeLabel(o.outcome) }}</span>
+            <span :class="['text-[11px]', outcomeColor(o.outcome).text]">{{ o.probability != null ? o.probability + '%' : '' }}</span>
           </div>
         </div>
       </div>
