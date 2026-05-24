@@ -108,10 +108,10 @@ const binaryOutcomes = computed(() => {
   }
 })
 
-// For double chance: all 3 options sorted by confidence
+// For double chance: 1X | 12 | X2 (home-side → neutral → away-side)
 const dcOutcomes = computed(() => {
   if (!allOutcomes.value.length) return []
-  const order = ['1X', 'X2', '12']
+  const order = ['1X', '12', 'X2']
   return order.map(o => allOutcomes.value.find(x => x.outcome === o)).filter(Boolean)
 })
 
