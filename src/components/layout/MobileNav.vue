@@ -1,7 +1,6 @@
 <script setup>
 import { RouterLink, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { useAuth } from '@/composables/useAuth'
 import {
   HomeIcon,
   ChartBarSquareIcon,
@@ -19,7 +18,6 @@ import {
 
 const { t } = useI18n()
 const route = useRoute()
-const { isAuthenticated } = useAuth()
 
 const navItems = [
   {
@@ -48,11 +46,12 @@ const navItems = [
   },
   {
     name: 'nav.dashboard',
-    to: isAuthenticated.value ? '/dashboard' : '/login',
+    to: '/dashboard',
     icon: UserCircleIcon,
     iconActive: UserCircleIconSolid
   }
 ]
+
 
 function isActive(path) {
   if (path === '/') return route.path === '/'
