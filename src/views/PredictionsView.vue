@@ -9,6 +9,8 @@ import PredictionCard from '@/components/predictions/PredictionCard.vue'
 import PremiumBlur from '@/components/predictions/PremiumBlur.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppSkeleton from '@/components/ui/AppSkeleton.vue'
+import PullToRefreshIndicator from '@/components/ui/PullToRefreshIndicator.vue'
+import { usePullToRefresh } from '@/composables/usePullToRefresh'
 import { FunnelIcon, CalendarIcon, GlobeAltIcon, BoltIcon, FireIcon, ArrowsUpDownIcon } from '@heroicons/vue/24/outline'
 
 const { t } = useI18n()
@@ -78,6 +80,8 @@ const leagueTypeOptions = computed(() => [
   { value: 'international_national', label: t('predictions.filters.internationalNational') }
 ])
 
+const { isPulling, isRefreshing, pullDistance } = usePullToRefresh(fetchPredictions)
+
 onMounted(async () => {
   await fetchPredictions()
 })
@@ -127,6 +131,7 @@ function clearFilters() {
 
 <template>
   <div class="py-8">
+    <PullToRefreshIndicator :is-pulling="isPulling" :is-refreshing="isRefreshing" :pull-distance="pullDistance" />
     <div class="container-app">
       <!-- Header -->
       <div class="mb-8">

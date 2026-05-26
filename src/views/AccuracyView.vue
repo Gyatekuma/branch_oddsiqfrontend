@@ -5,6 +5,8 @@ import accuracyApi from '@/api/accuracy'
 import { useLocale } from '@/composables/useLocale'
 import AppSkeleton from '@/components/ui/AppSkeleton.vue'
 import AppBadge from '@/components/ui/AppBadge.vue'
+import PullToRefreshIndicator from '@/components/ui/PullToRefreshIndicator.vue'
+import { usePullToRefresh } from '@/composables/usePullToRefresh'
 import { Line } from 'vue-chartjs'
 import {
   Chart as ChartJS,
@@ -115,7 +117,7 @@ async function switchPeriod(period) {
   }
 }
 
-onMounted(async () => {
+async function fetchAll() {
   loading.value = true
   try {
     const [, trendsData, recentData, summaryData, leagueData] = await Promise.all([
@@ -141,7 +143,11 @@ onMounted(async () => {
   } finally {
     loading.value = false
   }
-})
+}
+
+const { isPulling, isRefreshing, pullDistance } = usePullToRefresh(fetchAll)
+
+onMounted(fetchAll)
 
 // ── Helpers ──────────────────────────────────────────────────
 const sportsArray = computed(() =>
@@ -182,6 +188,7 @@ function getResultLabel(wasCorrect) {
 
 <template>
   <div class="py-8 min-h-screen bg-bg">
+    <PullToRefreshIndicator :is-pulling="isPulling" :is-refreshing="isRefreshing" :pull-distance="pullDistance" />
     <div class="container-app">
 
       <!-- Header -->

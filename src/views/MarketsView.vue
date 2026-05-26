@@ -8,6 +8,8 @@ import MarketPredictionCard from '@/components/predictions/MarketPredictionCard.
 import PremiumBlur from '@/components/predictions/PremiumBlur.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppSkeleton from '@/components/ui/AppSkeleton.vue'
+import PullToRefreshIndicator from '@/components/ui/PullToRefreshIndicator.vue'
+import { usePullToRefresh } from '@/composables/usePullToRefresh'
 import {
   ChartBarIcon,
   SparklesIcon,
@@ -105,11 +107,14 @@ async function goToPage(p) {
 
 watch(activeTab, () => {}) // handled by switchTab
 
+const { isPulling, isRefreshing, pullDistance } = usePullToRefresh(load)
+
 onMounted(load)
 </script>
 
 <template>
   <div class="py-10 min-h-screen bg-bg">
+    <PullToRefreshIndicator :is-pulling="isPulling" :is-refreshing="isRefreshing" :pull-distance="pullDistance" />
     <div class="container-app">
 
       <!-- Page header -->
