@@ -98,6 +98,12 @@ const routes = [
     meta: { title: 'Dashboard', requiresAuth: true }
   },
   {
+    path: '/payment/callback',
+    name: 'payment-callback',
+    component: () => import('@/views/PaymentCallbackView.vue'),
+    meta: { title: 'Payment', requiresAuth: true }
+  },
+  {
     path: '/admin',
     component: AdminLayout,
     meta: { requiresAuth: true, requiresAdmin: true },
