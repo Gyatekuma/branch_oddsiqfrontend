@@ -2,7 +2,6 @@
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import { SparklesIcon, LockClosedIcon, CheckBadgeIcon } from '@heroicons/vue/24/solid'
-import { ChartBarIcon } from '@heroicons/vue/24/outline'
 import api from '@/api/axios'
 import { usePremium } from '@/composables/usePremium'
 
@@ -20,7 +19,6 @@ const loading = ref(true)
 
 const current = computed(() => stats.value?.[activePeriod.value] ?? null)
 
-// Animated display values
 const displayFree = ref(0)
 const displayPremium = ref(0)
 const hasAnimated = ref(false)
@@ -30,11 +28,10 @@ let observer = null
 
 function animateTo(target, setter, duration = 1200) {
   const start = performance.now()
-  const from = 0
   function step(now) {
     const p = Math.min((now - start) / duration, 1)
     const eased = 1 - Math.pow(1 - p, 3)
-    setter(Math.round(from + eased * (target - from)))
+    setter(Math.round(eased * target))
     if (p < 1) requestAnimationFrame(step)
   }
   requestAnimationFrame(step)
@@ -66,7 +63,6 @@ async function fetchStats() {
 
 onMounted(async () => {
   await fetchStats()
-
   observer = new IntersectionObserver(
     ([entry]) => {
       if (entry.isIntersecting && !hasAnimated.value) {
@@ -93,6 +89,12 @@ const periodLabel = computed(() => ({
   week: 'this week',
   month: 'this month',
 })[activePeriod.value])
+
+const freeLabel = computed(() => ({
+  today: 'per day',
+  week: 'this week',
+  month: 'this month',
+})[activePeriod.value])
 </script>
 
 <template>
@@ -100,13 +102,10 @@ const periodLabel = computed(() => ({
     ref="sectionRef"
     class="py-14 md:py-20 bg-bg relative overflow-hidden"
   >
-    <!-- Subtle radial glow behind the card -->
-    <div
-      class="pointer-events-none absolute inset-0 flex items-center justify-center"
-      aria-hidden="true"
-    >
+    <!-- Radial glow -->
+    <div class="pointer-events-none absolute inset-0 flex items-center justify-center" aria-hidden="true">
       <div
-        class="w-[600px] h-[400px] rounded-full opacity-[0.06]"
+        class="w-[600px] h-[400px] rounded-full opacity-[0.05]"
         style="background: radial-gradient(ellipse at center, #d4a017 0%, transparent 70%)"
       ></div>
     </div>
@@ -119,8 +118,8 @@ const periodLabel = computed(() => ({
         <h2 class="font-display font-bold text-2xl md:text-3xl text-text">
           Free vs <span class="text-gold">Premium</span>
         </h2>
-        <p class="text-muted text-sm mt-2 max-w-xs mx-auto leading-relaxed">
-          See exactly how many predictions you're missing
+        <p class="text-muted text-sm mt-2 max-w-xs mx-auto">
+          How many predictions you unlock with each plan
         </p>
       </div>
 
@@ -145,7 +144,7 @@ const periodLabel = computed(() => ({
 
       <!-- Skeleton -->
       <div v-if="loading" class="max-w-2xl mx-auto">
-        <div class="h-52 rounded-2xl bg-surface border border-border animate-pulse"></div>
+        <div class="h-48 rounded-2xl bg-surface border border-border animate-pulse"></div>
       </div>
 
       <!-- No data -->
@@ -160,74 +159,49 @@ const periodLabel = computed(() => ({
       <div v-else class="max-w-2xl mx-auto">
         <div
           class="rounded-2xl border border-border bg-surface overflow-hidden"
-          style="box-shadow: 0 0 40px rgba(212, 160, 23, 0.06)"
+          style="box-shadow: 0 0 40px rgba(212,160,23,0.06)"
         >
 
           <!-- Two-column split -->
           <div class="grid grid-cols-2 divide-x divide-border">
 
             <!-- FREE column -->
-            <div class="p-6 md:p-8 flex flex-col items-center text-center gap-3">
-              <div class="flex items-center gap-1.5 text-xs font-semibold text-muted uppercase tracking-widest">
+            <div class="p-6 md:p-8 flex flex-col items-center text-center">
+              <div class="flex items-center gap-1.5 text-xs font-semibold text-muted uppercase tracking-widest mb-4">
                 <div class="w-1.5 h-1.5 rounded-full bg-muted/60"></div>
                 Free
               </div>
-              <div class="text-5xl md:text-6xl font-display font-bold text-muted/60 tabular-nums leading-none">
+              <div class="text-6xl md:text-7xl font-display font-bold text-muted/50 tabular-nums leading-none mb-3">
                 {{ hasAnimated ? displayFree : current.free }}
               </div>
-              <p class="text-xs text-muted/60 leading-relaxed">
-                predictions<br>{{ periodLabel }}
-              </p>
-              <!-- Blurred fake rows to hint at locked content -->
-              <div class="w-full mt-2 flex flex-col gap-1.5">
-                <div
-                  v-for="i in 3"
-                  :key="i"
-                  class="h-6 rounded-md bg-border/60"
-                  :style="{ opacity: 1 - i * 0.2 }"
-                ></div>
-              </div>
+              <p class="text-xs text-muted/60">predictions</p>
+              <p class="text-xs text-muted/40 mt-1">{{ freeLabel }}</p>
             </div>
 
             <!-- PREMIUM column -->
             <div
-              class="p-6 md:p-8 flex flex-col items-center text-center gap-3 relative"
-              style="background: linear-gradient(160deg, rgba(212,160,23,0.06) 0%, transparent 60%)"
+              class="p-6 md:p-8 flex flex-col items-center text-center relative"
+              style="background: linear-gradient(160deg, rgba(212,160,23,0.07) 0%, transparent 55%)"
             >
-              <!-- Corner sparkle badge -->
-              <div class="absolute top-3 right-3">
-                <div class="flex items-center gap-1 px-2 py-0.5 rounded-full bg-gold/15 border border-gold/30 text-gold text-[10px] font-semibold">
-                  <SparklesIcon class="w-2.5 h-2.5" />
-                  Premium
-                </div>
+              <!-- Badge -->
+              <div class="absolute top-3 right-3 flex items-center gap-1 px-2 py-0.5 rounded-full bg-gold/15 border border-gold/30 text-gold text-[10px] font-semibold">
+                <SparklesIcon class="w-2.5 h-2.5" />
+                Premium
               </div>
 
-              <div class="flex items-center gap-1.5 text-xs font-semibold text-gold uppercase tracking-widest">
+              <div class="flex items-center gap-1.5 text-xs font-semibold text-gold uppercase tracking-widest mb-4">
                 <div class="w-1.5 h-1.5 rounded-full bg-gold animate-pulse"></div>
                 All Picks
               </div>
 
               <div
-                class="text-5xl md:text-6xl font-display font-bold tabular-nums leading-none"
-                style="color: #d4a017; text-shadow: 0 0 30px rgba(212,160,23,0.4)"
+                class="text-6xl md:text-7xl font-display font-bold tabular-nums leading-none mb-3"
+                style="color: #d4a017; text-shadow: 0 0 30px rgba(212,160,23,0.35)"
               >
                 {{ hasAnimated ? displayPremium : current.total }}
               </div>
-              <p class="text-xs text-gold/70 leading-relaxed">
-                predictions<br>{{ periodLabel }}
-              </p>
-              <!-- Gold shimmer rows hinting at premium content -->
-              <div class="w-full mt-2 flex flex-col gap-1.5">
-                <div
-                  v-for="i in 3"
-                  :key="i"
-                  class="h-6 rounded-md"
-                  :style="{
-                    background: 'linear-gradient(90deg, rgba(212,160,23,0.15), rgba(212,160,23,0.06))',
-                    opacity: 1 - i * 0.15
-                  }"
-                ></div>
-              </div>
+              <p class="text-xs text-gold/70">predictions</p>
+              <p class="text-xs text-gold/40 mt-1">{{ periodLabel }}</p>
             </div>
 
           </div>
@@ -235,36 +209,32 @@ const periodLabel = computed(() => ({
           <!-- Coverage bar -->
           <div class="px-6 md:px-8 py-5 border-t border-border bg-bg/40">
             <div class="flex items-center justify-between text-xs text-muted mb-2">
-              <span class="flex items-center gap-1.5">
-                <ChartBarIcon class="w-3.5 h-3.5" />
-                Your coverage {{ periodLabel }}
-              </span>
+              <span>Your coverage {{ periodLabel }}</span>
               <span class="font-semibold text-gold">{{ coveragePct }}%</span>
             </div>
             <div class="h-2 rounded-full bg-border overflow-hidden">
               <div
                 class="h-full rounded-full transition-all duration-1000 ease-out"
                 style="background: linear-gradient(90deg, #d4a017, #f5c842)"
-                :style="{ width: hasAnimated ? coveragePct + '%' : '0%' }"
+                :style="{ width: (hasAnimated ? coveragePct : 0) + '%' }"
               ></div>
             </div>
-            <p class="text-[11px] text-muted/60 mt-2">
+            <p class="text-[11px] text-muted/60 mt-2.5">
               <template v-if="isPremium">
                 You have access to all
                 <span class="text-gold font-semibold">{{ current.total }}</span>
                 predictions {{ periodLabel }}.
               </template>
               <template v-else>
-                You're seeing
-                <span class="text-gold font-semibold">{{ current.free }} of {{ current.total }}</span>
-                predictions. Upgrade to unlock all {{ current.total }}.
+                Free users see <span class="text-gold font-semibold">{{ current.free }}</span> of
+                <span class="font-semibold text-text/70">{{ current.total }}</span>
+                predictions. Upgrade for the full picture.
               </template>
             </p>
           </div>
 
           <!-- CTA -->
           <div class="px-6 md:px-8 py-5 border-t border-border flex flex-col sm:flex-row items-center gap-3">
-            <!-- Premium user -->
             <template v-if="isPremium">
               <div class="flex items-center gap-2 text-sm text-gold font-medium">
                 <CheckBadgeIcon class="w-4 h-4 shrink-0" />
@@ -277,7 +247,6 @@ const periodLabel = computed(() => ({
                 View all picks →
               </RouterLink>
             </template>
-            <!-- Free user -->
             <template v-else>
               <RouterLink
                 to="/premium"
