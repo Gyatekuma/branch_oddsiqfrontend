@@ -155,52 +155,50 @@ function clearFilters() {
           </button>
         </div>
 
-        <div :class="['space-y-3', showFilters ? 'block' : 'hidden md:block']">
-          <!-- Row 1: server-side filters -->
-          <div class="flex flex-wrap items-center gap-3">
-            <!-- League Type Filter -->
-            <div class="relative">
-              <GlobeAltIcon class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted pointer-events-none" />
-              <select v-model="selectedLeagueType"
-                class="input-field pl-10 pr-8 py-2 w-full md:w-auto cursor-pointer appearance-none bg-surface text-sm">
-                <option v-for="option in leagueTypeOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
-              </select>
-            </div>
+        <!-- Confidence chips — always visible -->
+        <div class="flex flex-wrap items-center gap-2">
+          <button v-for="chip in confidenceChips" :key="chip.key"
+            @click="confidenceFilter = chip.key"
+            :class="[
+              'px-3 py-1.5 rounded-full text-xs font-semibold border transition-all',
+              confidenceFilter === chip.key
+                ? 'bg-accent text-bg border-accent'
+                : 'bg-surface border-border text-muted hover:border-accent/40 hover:text-text'
+            ]">
+            <FireIcon v-if="chip.key === 'value'" class="w-3 h-3 inline mr-1 text-gold" />
+            {{ chip.label }}
+          </button>
+          <span v-if="confidenceFilter !== 'all' || sortBy !== 'kickoff'" class="text-xs text-muted ml-1">
+            {{ filteredAndSorted.length }} shown
+          </span>
+        </div>
 
-            <!-- Date picker -->
-            <div class="relative">
-              <CalendarIcon class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted pointer-events-none z-10" />
-              <input ref="dateInput" v-model="selectedDate" type="date"
-                class="input-field pl-10 pr-4 py-2 w-full md:w-auto cursor-pointer text-sm"
-                @click="dateInputRef?.showPicker()">
-            </div>
-
-            <!-- Sort -->
-            <button
-              @click="sortBy = sortBy === 'kickoff' ? 'confidence' : 'kickoff'"
-              class="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-border bg-surface text-sm text-muted hover:text-text hover:border-accent/40 transition-all">
-              <ArrowsUpDownIcon class="w-4 h-4" />
-              {{ sortBy === 'kickoff' ? 'By Time' : 'By Confidence' }}
-            </button>
+        <!-- Date / league / sort — hidden on mobile behind funnel -->
+        <div :class="['flex flex-wrap items-center gap-3', showFilters ? 'flex' : 'hidden md:flex']">
+          <!-- League Type Filter -->
+          <div class="relative">
+            <GlobeAltIcon class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted pointer-events-none" />
+            <select v-model="selectedLeagueType"
+              class="input-field pl-10 pr-8 py-2 w-full md:w-auto cursor-pointer appearance-none bg-surface text-sm">
+              <option v-for="option in leagueTypeOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
+            </select>
           </div>
 
-          <!-- Row 2: confidence chips -->
-          <div class="flex flex-wrap items-center gap-2">
-            <button v-for="chip in confidenceChips" :key="chip.key"
-              @click="confidenceFilter = chip.key"
-              :class="[
-                'px-3 py-1.5 rounded-full text-xs font-semibold border transition-all',
-                confidenceFilter === chip.key
-                  ? 'bg-accent text-bg border-accent'
-                  : 'bg-surface border-border text-muted hover:border-accent/40 hover:text-text'
-              ]">
-              <FireIcon v-if="chip.key === 'value'" class="w-3 h-3 inline mr-1 text-gold" />
-              {{ chip.label }}
-            </button>
-            <span v-if="confidenceFilter !== 'all' || sortBy !== 'kickoff'" class="text-xs text-muted ml-1">
-              {{ filteredAndSorted.length }} shown
-            </span>
+          <!-- Date picker -->
+          <div class="relative">
+            <CalendarIcon class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted pointer-events-none z-10" />
+            <input ref="dateInput" v-model="selectedDate" type="date"
+              class="input-field pl-10 pr-4 py-2 w-full md:w-auto cursor-pointer text-sm"
+              @click="dateInputRef?.showPicker()">
           </div>
+
+          <!-- Sort -->
+          <button
+            @click="sortBy = sortBy === 'kickoff' ? 'confidence' : 'kickoff'"
+            class="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-border bg-surface text-sm text-muted hover:text-text hover:border-accent/40 transition-all">
+            <ArrowsUpDownIcon class="w-4 h-4" />
+            {{ sortBy === 'kickoff' ? 'By Time' : 'By Confidence' }}
+          </button>
         </div>
       </div>
 

@@ -124,24 +124,28 @@ onMounted(load)
       </div>
 
       <!-- Market tabs -->
-      <div class="flex gap-2 overflow-x-auto scrollbar-hide pb-1 mb-2">
-        <button
-          v-for="tab in tabs"
-          :key="tab.key"
-          :class="[
-            'flex-shrink-0 px-4 py-2.5 rounded-xl text-sm font-semibold border transition-all',
-            activeTab === tab.key
-              ? 'bg-accent text-bg border-accent shadow-lg shadow-accent/20'
-              : 'bg-surface text-muted border-border hover:border-accent/40 hover:text-text'
-          ]"
-          @click="switchTab(tab.key)"
-        >
-          <span>{{ tab.label }}</span>
-          <span
-            v-if="tab.premium"
-            class="ml-1.5 text-[10px] font-bold text-gold"
-          >★</span>
-        </button>
+      <div class="relative mb-2">
+        <div class="flex gap-2 overflow-x-auto scrollbar-hide pb-1">
+          <button
+            v-for="tab in tabs"
+            :key="tab.key"
+            :class="[
+              'flex-shrink-0 px-4 py-2.5 rounded-xl text-sm font-semibold border transition-all',
+              activeTab === tab.key
+                ? 'bg-accent text-bg border-accent shadow-lg shadow-accent/20'
+                : 'bg-surface text-muted border-border hover:border-accent/40 hover:text-text'
+            ]"
+            @click="switchTab(tab.key)"
+          >
+            <span>{{ tab.label }}</span>
+            <span
+              v-if="tab.premium"
+              class="ml-1.5 text-[10px] font-bold text-gold"
+            >★</span>
+          </button>
+        </div>
+        <!-- Scroll hint fade on mobile -->
+        <div class="pointer-events-none absolute right-0 top-0 bottom-1 w-12 bg-gradient-to-l from-bg to-transparent md:hidden" />
       </div>
 
       <!-- Tab description -->
