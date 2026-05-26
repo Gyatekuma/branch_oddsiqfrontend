@@ -1,9 +1,12 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { RouterLink } from 'vue-router'
-import { SparklesIcon, LockClosedIcon } from '@heroicons/vue/24/solid'
+import { SparklesIcon, LockClosedIcon, CheckBadgeIcon } from '@heroicons/vue/24/solid'
 import { ChartBarIcon } from '@heroicons/vue/24/outline'
 import api from '@/api/axios'
+import { usePremium } from '@/composables/usePremium'
+
+const { isPremium } = usePremium()
 
 const periods = [
   { key: 'today', label: 'Today' },
@@ -80,6 +83,7 @@ onMounted(async () => {
 onUnmounted(() => observer?.disconnect())
 
 const coveragePct = computed(() => {
+  if (isPremium.value) return 100
   if (!current.value || !current.value.total) return 100
   return Math.max(1, Math.round((current.value.free / current.value.total) * 100))
 })
@@ -245,28 +249,51 @@ const periodLabel = computed(() => ({
               ></div>
             </div>
             <p class="text-[11px] text-muted/60 mt-2">
-              You're seeing
-              <span class="text-gold font-semibold">{{ current.free }} of {{ current.total }}</span>
-              predictions. Upgrade to unlock all {{ current.total }}.
+              <template v-if="isPremium">
+                You have access to all
+                <span class="text-gold font-semibold">{{ current.total }}</span>
+                predictions {{ periodLabel }}.
+              </template>
+              <template v-else>
+                You're seeing
+                <span class="text-gold font-semibold">{{ current.free }} of {{ current.total }}</span>
+                predictions. Upgrade to unlock all {{ current.total }}.
+              </template>
             </p>
           </div>
 
           <!-- CTA -->
           <div class="px-6 md:px-8 py-5 border-t border-border flex flex-col sm:flex-row items-center gap-3">
-            <RouterLink
-              to="/premium"
-              class="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-bg transition-all duration-200 hover:opacity-90 active:scale-95"
-              style="background: linear-gradient(135deg, #d4a017 0%, #f5c842 50%, #d4a017 100%); box-shadow: 0 4px 20px rgba(212,160,23,0.3)"
-            >
-              <LockClosedIcon class="w-4 h-4" />
-              Unlock All Predictions
-            </RouterLink>
-            <RouterLink
-              to="/predictions"
-              class="flex-shrink-0 text-sm text-muted hover:text-text transition-colors"
-            >
-              Browse free picks →
-            </RouterLink>
+            <!-- Premium user -->
+            <template v-if="isPremium">
+              <div class="flex items-center gap-2 text-sm text-gold font-medium">
+                <CheckBadgeIcon class="w-4 h-4 shrink-0" />
+                You have full access to all predictions
+              </div>
+              <RouterLink
+                to="/predictions"
+                class="sm:ml-auto flex-shrink-0 text-sm text-muted hover:text-text transition-colors"
+              >
+                View all picks →
+              </RouterLink>
+            </template>
+            <!-- Free user -->
+            <template v-else>
+              <RouterLink
+                to="/premium"
+                class="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-bg transition-all duration-200 hover:opacity-90 active:scale-95"
+                style="background: linear-gradient(135deg, #d4a017 0%, #f5c842 50%, #d4a017 100%); box-shadow: 0 4px 20px rgba(212,160,23,0.3)"
+              >
+                <LockClosedIcon class="w-4 h-4" />
+                Unlock All Predictions
+              </RouterLink>
+              <RouterLink
+                to="/predictions"
+                class="flex-shrink-0 text-sm text-muted hover:text-text transition-colors"
+              >
+                Browse free picks →
+              </RouterLink>
+            </template>
           </div>
 
         </div>
