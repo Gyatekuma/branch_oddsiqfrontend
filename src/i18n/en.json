@@ -191,6 +191,7 @@
   },
   "admin": {
     "nav": {
+      "stats": "Stats",
       "predictions": "Predictions",
       "users": "Users",
       "guides": "Guides"

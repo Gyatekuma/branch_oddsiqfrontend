@@ -48,7 +48,12 @@ export const paymentsApi = {
   async getHistory() {
     const response = await api.get('/api/payments/history')
     const data = response.data.data
-    return { payments: data.payments || data || [] }
+    return { payments: data.payments || [] }
+  },
+
+  async cancelSubscription() {
+    const response = await api.post('/api/payments/cancel')
+    return response.data
   }
 }
 

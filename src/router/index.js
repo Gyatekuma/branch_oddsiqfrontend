@@ -22,6 +22,7 @@ const AdminLayout = () => import('@/views/admin/AdminLayout.vue')
 const AdminPredictions = () => import('@/views/admin/AdminPredictions.vue')
 const AdminUsers = () => import('@/views/admin/AdminUsers.vue')
 const AdminGuides = () => import('@/views/admin/AdminGuides.vue')
+const AdminStats = () => import('@/views/admin/AdminStats.vue')
 
 const routes = [
   {
@@ -122,6 +123,12 @@ const routes = [
         name: 'admin-guides',
         component: AdminGuides,
         meta: { title: 'Manage Guides' }
+      },
+      {
+        path: 'stats',
+        name: 'admin-stats',
+        component: AdminStats,
+        meta: { title: 'Stats & Revenue' }
       }
     ]
   },

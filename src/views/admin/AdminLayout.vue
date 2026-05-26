@@ -4,13 +4,15 @@ import { useI18n } from 'vue-i18n'
 import {
   ChartBarSquareIcon,
   UsersIcon,
-  BookOpenIcon
+  BookOpenIcon,
+  CurrencyDollarIcon
 } from '@heroicons/vue/24/outline'
 
 const { t } = useI18n()
 const route = useRoute()
 
 const navItems = [
+  { name: 'admin.nav.stats', to: '/admin/stats', icon: CurrencyDollarIcon },
   { name: 'admin.nav.predictions', to: '/admin/predictions', icon: ChartBarSquareIcon },
   { name: 'admin.nav.users', to: '/admin/users', icon: UsersIcon },
   { name: 'admin.nav.guides', to: '/admin/guides', icon: BookOpenIcon }
