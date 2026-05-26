@@ -12,6 +12,7 @@ import leaguesApi from '@/api/leagues'
 import predictionsApi from '@/api/predictions'
 import { getLeagueLogo } from '@/utils/leagueLogos'
 import PredictionCard from '@/components/predictions/PredictionCard.vue'
+import PredictionStatsSection from '@/components/stats/PredictionStatsSection.vue'
 import PremiumBlur from '@/components/predictions/PremiumBlur.vue'
 import NewsletterSignup from '@/components/newsletter/NewsletterSignup.vue'
 import AppButton from '@/components/ui/AppButton.vue'
@@ -1064,6 +1065,11 @@ const trackRecordPct = computed(() =>
         </div>
       </div>
     </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         FREE vs PREMIUM STATS
+    ═══════════════════════════════════════════════════════ -->
+    <PredictionStatsSection />
 
     <!-- ═══════════════════════════════════════════════════════
          LEAGUE SPOTLIGHT
