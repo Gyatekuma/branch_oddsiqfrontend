@@ -11,11 +11,15 @@ import AppButton from '@/components/ui/AppButton.vue'
 import AppBadge from '@/components/ui/AppBadge.vue'
 import AppAlert from '@/components/ui/AppAlert.vue'
 import AppSkeleton from '@/components/ui/AppSkeleton.vue'
+import PullToRefreshIndicator from '@/components/ui/PullToRefreshIndicator.vue'
+import { usePullToRefresh } from '@/composables/usePullToRefresh'
 import {
   SparklesIcon,
   BookmarkIcon,
   Cog6ToothIcon,
-  LockClosedIcon
+  LockClosedIcon,
+  BookOpenIcon,
+  ShieldCheckIcon
 } from '@heroicons/vue/24/outline'
 
 const { t } = useI18n()
@@ -43,14 +47,18 @@ const tabs = [
   { id: 'security', name: 'dashboard.security.title', icon: LockClosedIcon }
 ]
 
-onMounted(async () => {
+async function fetchDashboard() {
   loading.value = true
   try {
     await predictionsStore.fetchSaved()
   } finally {
     loading.value = false
   }
-})
+}
+
+const { isPulling, isRefreshing, pullDistance } = usePullToRefresh(fetchDashboard)
+
+onMounted(fetchDashboard)
 
 async function handlePasswordChange() {
   if (passwordForm.value.new !== passwordForm.value.confirm) {
@@ -80,6 +88,7 @@ async function handleUnsave(id) {
 
 <template>
   <div class="py-8">
+    <PullToRefreshIndicator :is-pulling="isPulling" :is-refreshing="isRefreshing" :pull-distance="pullDistance" />
     <div class="container-app">
       <!-- Header -->
       <div class="mb-8">
@@ -89,6 +98,25 @@ async function handleUnsave(id) {
         <p class="text-muted">
           Welcome back, {{ authStore.user?.name }}
         </p>
+      </div>
+
+      <!-- Mobile quick links: Guides + Admin -->
+      <div class="md:hidden flex gap-3 mb-6">
+        <RouterLink
+          to="/guides"
+          class="flex-1 flex items-center gap-2.5 px-4 py-3 rounded-xl border border-border bg-surface hover:border-accent/40 transition-colors"
+        >
+          <BookOpenIcon class="w-5 h-5 text-accent shrink-0" />
+          <span class="text-sm font-semibold text-text">Guides</span>
+        </RouterLink>
+        <RouterLink
+          v-if="authStore.isAdmin"
+          to="/admin"
+          class="flex-1 flex items-center gap-2.5 px-4 py-3 rounded-xl border border-border bg-surface hover:border-accent/40 transition-colors"
+        >
+          <ShieldCheckIcon class="w-5 h-5 text-accent shrink-0" />
+          <span class="text-sm font-semibold text-text">Admin</span>
+        </RouterLink>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">

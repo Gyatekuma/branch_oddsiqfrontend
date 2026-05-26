@@ -17,6 +17,8 @@ import PremiumBlur from '@/components/predictions/PremiumBlur.vue'
 import NewsletterSignup from '@/components/newsletter/NewsletterSignup.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppSkeleton from '@/components/ui/AppSkeleton.vue'
+import PullToRefreshIndicator from '@/components/ui/PullToRefreshIndicator.vue'
+import { usePullToRefresh } from '@/composables/usePullToRefresh'
 import ConfidenceMeter from '@/components/predictions/ConfidenceMeter.vue'
 import AppBadge from '@/components/ui/AppBadge.vue'
 import {
@@ -188,7 +190,7 @@ onUnmounted(() => {
   if (rafId) cancelAnimationFrame(rafId)
 })
 
-onMounted(async () => {
+async function fetchHome() {
   loading.value = true
 
   // If store already has stale cache data, unblock the card immediately
@@ -272,7 +274,11 @@ onMounted(async () => {
       })
       .catch(() => {}),
   ])
-})
+}
+
+const { isPulling, isRefreshing, pullDistance } = usePullToRefresh(fetchHome)
+
+onMounted(fetchHome)
 
 const topPick = computed(() => predictionsStore.topPicks[0])
 
@@ -402,6 +408,7 @@ const trackRecordPct = computed(() =>
 
 <template>
   <div class="min-h-screen bg-bg">
+    <PullToRefreshIndicator :is-pulling="isPulling" :is-refreshing="isRefreshing" :pull-distance="pullDistance" />
 
     <!-- ═══════════════════════════════════════════════════════
          ABOVE FOLD: hero + ticker fill exactly the viewport
