@@ -84,14 +84,9 @@ async function handleSubmit() {
           </div>
 
           <div>
-            <div class="flex items-center justify-between mb-2">
-              <label for="password" class="block text-xs font-display font-semibold uppercase tracking-wider text-muted">
-                {{ t('auth.login.password') }}
-              </label>
-              <RouterLink to="/forgot-password" class="text-xs text-accent hover:text-accent/80 transition-colors">
-                {{ t('auth.login.forgotPassword') }}
-              </RouterLink>
-            </div>
+            <label for="password" class="block text-xs font-display font-semibold uppercase tracking-wider text-muted mb-2">
+              {{ t('auth.login.password') }}
+            </label>
             <div class="relative">
               <input
                 id="password"
@@ -110,6 +105,11 @@ async function handleSubmit() {
                 <EyeSlashIcon v-if="showPassword" class="w-5 h-5" />
                 <EyeIcon v-else class="w-5 h-5" />
               </button>
+            </div>
+            <div class="mt-2 text-right">
+              <RouterLink to="/forgot-password" class="text-xs text-accent hover:text-accent/80 transition-colors">
+                {{ t('auth.login.forgotPassword') }}
+              </RouterLink>
             </div>
           </div>
 
